@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CYBER / AI Market Observatory</title>
+<style>
+:root{--bg:#05080d;--panel:#090e16;--line:#1a2634;--muted:#718198;--text:#dce8f5;--cyan:#67e8f9;--blue:#7aa8ff;--gold:#f8c45c;--green:#55e6a5;--red:#ff6f91}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 48% 28%,#101b2b 0,#05080d 52%);color:var(--text);font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+header{padding:16px 20px 10px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.kicker{color:#9caec4;font-size:9px;letter-spacing:2px}.brand{font-weight:800;letter-spacing:1px;font-size:18px}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:10px;margin-top:3px}
+.status{display:flex;gap:8px;align-items:center;color:var(--green)}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);display:inline-block}
+main{padding:12px;max-width:1600px;margin:auto}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}.stat,.panel{background:linear-gradient(145deg,rgba(12,19,29,.97),rgba(5,9,15,.97));border:1px solid var(--line);border-radius:5px}.stat{padding:10px 12px}.label{color:var(--muted);font-size:9px;letter-spacing:1.2px;text-transform:uppercase}.value{font-size:19px;font-weight:700;margin-top:4px}.small{color:var(--muted);font-size:10px}.green{color:var(--green)}.gold{color:var(--gold)}.cyan{color:var(--cyan)}
+.grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.8fr);gap:10px}.panel{padding:10px;min-width:0}.panelhead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:8px;gap:8px}.paneltitle{font-weight:700;letter-spacing:.7px}.tag{border:1px solid #254050;color:var(--cyan);padding:2px 6px;font-size:9px;border-radius:3px}.hero{min-height:340px;position:relative;overflow:hidden}.globe{width:100%;height:330px;display:block}.hero-overlay{position:absolute;left:12px;bottom:12px;background:#08111ddd;border:1px solid #394453;padding:8px 10px;font-size:10px;max-width:80%}.rightcol{display:grid;gap:10px;align-content:start}.bars{display:flex;align-items:end;gap:4px;height:90px;padding:8px 0 0}.bar{flex:1;background:linear-gradient(0deg,#284c72,#75d6f1);opacity:.85;min-width:3px;border-radius:2px 2px 0 0}.linechart{width:100%;height:90px}.markettable{width:100%;border-collapse:collapse;font-size:10px}.markettable th{text-align:left;color:var(--muted);font-weight:500;padding:7px 4px;border-bottom:1px solid var(--line)}.markettable td{padding:7px 4px;border-bottom:1px solid #111b27;white-space:nowrap}.markettable tr:last-child td{border-bottom:0}.up{color:var(--green)}.down{color:var(--red)}.scroll{max-height:290px;overflow:auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.metriclist{display:grid;gap:7px}.metricrow{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #14202b;padding-bottom:5px}.meter{height:4px;background:#172432;margin-top:5px;border-radius:3px;overflow:hidden}.meter i{display:block;height:100%;background:linear-gradient(90deg,#4c91d9,#6df0df)}.notice{color:#c4d0de;background:#0b131d;border:1px solid #2a394a;padding:10px;margin-top:10px;font-size:10px}.controls{display:flex;gap:6px;flex-wrap:wrap}.btn{border:1px solid #2a4053;background:#0b1520;color:var(--text);padding:6px 9px;border-radius:3px;font:inherit;cursor:pointer}.btn.active{border-color:var(--cyan);color:var(--cyan)}footer{padding:12px 4px;color:#62758a;font-size:9px;text-align:center}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{min-height:270px}.globe{height:270px}.two{grid-template-columns:1fr}.value{font-size:17px}}
+</style>
+</head>
+<body>
+<header><div><div class="kicker">MARKET INTELLIGENCE / LIVE DATA SYSTEM</div><div class="brand">CYBER<span> / </span>AI OBSERVATORY</div><div class="sub">MULTI-MARKET MONITOR · BINANCE PUBLIC STREAM</div></div><div class="status"><span class="dot" id="dot"></span><span id="conn">CONNECTING TO BINANCE…</span></div></header>
+<main>
+<section class="stats">
+ <div class="stat"><div class="label">BTC / USDT</div><div class="value" id="btc">$—</div><div class="small" id="btcchange">Waiting for live ticker</div></div>
+ <div class="stat"><div class="label">Markets monitored</div><div class="value cyan" id="marketcount">50</div><div class="small">USDT spot pairs · public data</div></div>
+ <div class="stat"><div class="label">Positive movers</div><div class="value green" id="positive">—</div><div class="small">Among loaded market tickers</div></div>
+ <div class="stat"><div class="label">Scanner status</div><div class="value gold" id="scanstatus">WARMING UP</div><div class="small">No real orders are being placed</div></div>
+</section>
+<section class="grid">
+ <div class="panel hero"><div class="panelhead"><span class="paneltitle">MARKET NETWORK / ACTIVITY MAP</span><span class="tag">LIVE VISUALIZATION</span></div>
+ <canvas id="network" class="globe"></canvas><div class="hero-overlay"><div class="cyan">SYSTEM READOUT</div><div id="readout">Opening public market stream…</div><div class="small" id="lastupdate">Last update: —</div></div></div>
+ <div class="rightcol">
+  <div class="panel"><div class="panelhead"><span class="paneltitle">MARKET PULSE</span><span class="tag">50 PAIRS</span></div><div class="bars" id="bars"></div><div class="small">Recent 24h change snapshot; bars refresh with ticker data.</div></div>
+  <div class="panel"><div class="panelhead"><span class="paneltitle">BTC PRICE TRACE</span><span class="tag">LIVE</span></div><svg id="pricechart" class="linechart" viewBox="0 0 400 90" preserveAspectRatio="none"><text x="10" y="42" fill="#718198" font-size="11">Waiting for price data…</text></svg><div class="small">Local browser history since dashboard opened.</div></div>
+  <div class="panel"><div class="panelhead"><span class="paneltitle">BOT / CYCLE STATE</span><span class="tag">OBSERVE ONLY</span></div><div class="metriclist"><div class="metricrow"><span>01 · Binance stream</span><b id="streamstate" class="gold">CONNECTING</b></div><div class="metricrow"><span>02 · Market scanner</span><b id="scannerstate">STANDBY</b></div><div class="metricrow"><span>03 · Arbitrage checks</span><b class="gold">NOT ENABLED</b></div><div class="metricrow"><span>04 · Order execution</span><b class="gold">DISABLED</b></div></div></div>
+ </div>
+</section>
+<section class="two">
+ <div class="panel"><div class="panelhead"><span class="paneltitle">MULTI-MARKET TICKER</span><span class="tag" id="tickerstatus">LOADING</span></div><div class="scroll"><table class="markettable"><thead><tr><th>SYMBOL</th><th>LAST PRICE</th><th>24H %</th><th>24H HIGH</th><th>24H LOW</th></tr></thead><tbody id="markets"><tr><td colspan="5" class="small">Waiting for Binance data…</td></tr></tbody></table></div></div>
+ <div class="panel"><div class="panelhead"><span class="paneltitle">SCANNER / SYSTEM METRICS</span><span class="tag">PUBLIC DATA</span></div><div class="metriclist">
+  <div><div class="metricrow"><span>Market data freshness</span><b id="fresh">—</b></div><div class="meter"><i id="freshbar" style="width:4%"></i></div></div>
+  <div><div class="metricrow"><span>Markets with ticker data</span><b id="loaded">0 / 50</b></div><div class="meter"><i id="loadedbar" style="width:0%"></i></div></div>
+  <div><div class="metricrow"><span>Largest positive move</span><b id="best" class="green">—</b></div><div class="meter"><i id="bestbar" style="width:0%"></i></div></div>
+  <div><div class="metricrow"><span>Largest negative move</span><b id="worst" class="down">—</b></div><div class="meter"><i id="worstbar" style="width:0%"></i></div></div>
+ </div><div class="notice"><b>Important:</b> This starter dashboard reads public Binance ticker data. It does not trade, guarantee profit, or prove arbitrage. True arbitrage needs executable bid/ask prices, fees, liquidity, latency checks, and often multiple venues.</div></div>
+</section>
+<div class="controls" style="margin-top:10px"><button class="btn active" id="reconnect">Reconnect live feed</button><button class="btn" id="pause">Pause visual updates</button><button class="btn" id="reset">Reset price trace</button></div>
+<footer>CYBER / AI OBSERVATORY · PUBLIC MARKET DATA ONLY · NOT FINANCIAL ADVICE · NEVER SHARE API SECRET KEYS</footer>
+</main>
+<script>
+const symbols=['btcusdt','ethusdt','bnbusdt','solusdt','xrpusdt','adausdt','dogeusdt','trxusdt','linkusdt','avaxusdt','dotusdt','ltcusdt','bchusdt','nearusdt','atomusdt','etcusdt','uniusdt','aptusdt','arbusdt','op usdt'.replace(' ',''),'filusdt','icpusdt','suiusdt','pepeusdt','shibusdt','xlmusdt','vetusdt','algo usdt'.replace(' ',''),'ftmusdt','aaveusdt','mkrusdt','injusdt','renderusdt','tiausdt','sei usdt'.replace(' ',''),'imxusdt','sandusdt','manausdt','axs usdt'.replace(' ',''),'eosusdt','thetausdt','flowusdt','grtusdt','ldousdt','crvusdt','ens usdt'.replace(' ',''),'zecusdt','neousdt','iotausdt','compusdt'];
+const labels=s=>s.toUpperCase().replace('USDT','/USDT');let data={},socket=null,paused=false,history=[],lastMessage=0,retry=null;
+const $=id=>document.getElementById(id);
+function fmt(v){if(!Number.isFinite(v))return '—';return v>=1000?v.toLocaleString('en-US',{maximumFractionDigits:2}):v>=1?v.toLocaleString('en-US',{maximumFractionDigits:4}):v.toLocaleString('en-US',{maximumFractionDigits:8})}
+function connect(){if(socket){try{socket.close()}catch(e){}}clearTimeout(retry);$('conn').textContent='CONNECTING TO BINANCE…';$('streamstate').textContent='CONNECTING';$('dot').style.background='#f8c45c';$('dot').style.boxShadow='0 0 10px #f8c45c';
+const streams=symbols.map(s=>s+'@ticker').join('/');socket=new WebSocket('wss://stream.binance.com:9443/stream?streams='+streams);
+socket.onopen=()=>{$('conn').textContent='LIVE · BINANCE STREAM';$('streamstate').textContent='CONNECTED';$('streamstate').className='green';$('dot').style.background='var(--green)';$('dot').style.boxShadow='0 0 12px var(--green)';$('scanstatus').textContent='ACTIVE';$('scannerstate').textContent='RUNNING';$('tickerstatus').textContent='LIVE';};
+socket.onmessage=e=>{lastMessage=Date.now();if(paused)return;try{const wrap=JSON.parse(e.data),d=wrap.data;if(!d||!d.s)return;data[d.s.toLowerCase()]={symbol:d.s.toLowerCase(),price:+d.c,change:+d.P,high:+d.h,low:+d.l,volume:+d.q};if(d.s==='BTCUSDT'){history.push(+d.c);if(history.length>80)history.shift()}render()}catch(err){}};
+socket.onerror=()=>{$('conn').textContent='STREAM ERROR · RETRYING';$('streamstate').textContent='ERROR';$('streamstate').className='down'};
+socket.onclose=()=>{if($('conn').textContent!=='PAUSED'){$('conn').textContent='DISCONNECTED · RETRYING';$('streamstate').textContent='RETRYING';retry=setTimeout(connect,3500)}};
+}
+function render(){const list=symbols.map(s=>data[s]).filter(Boolean);const btc=data.btcusdt;
+if(btc){$('btc').textContent='$'+fmt(btc.price);$('btcchange').textContent=(btc.change>=0?'+':'')+btc.change.toFixed(2)+'% over 24h';$('btcchange').className='small '+(btc.change>=0?'green':'down')}
+$('positive').textContent=list.filter(x=>x.change>=0).length; $('loaded').textContent=list.length+' / '+symbols.length;$('loadedbar').style.width=(list.length/symbols.length*100)+'%';$('marketcount').textContent=symbols.length;$('tickerstatus').textContent=list.length+' LIVE';
+$('markets').innerHTML=list.sort((a,b)=>b.volume-a.volume).map(x=>`<tr><td>${labels(x.symbol)}</td><td>$${fmt(x.price)}</td><td class="${x.change>=0?'up':'down'}">${x.change>=0?'+':''}${x.change.toFixed(2)}%</td><td>$${fmt(x.high)}</td><td>$${fmt(x.low)}</td></tr>`).join('')||'<tr><td colspan="5">Waiting for data…</td></tr>';
+const sorted=[...list].sort((a,b)=>b.change-a.change);if(sorted.length){const best=sorted[0],worst=sorted[sorted.length-1];$('best').textContent=labels(best.symbol)+' +'+best.change.toFixed(2)+'%';$('worst').textContent=labels(worst.symbol)+' '+worst.change.toFixed(2)+'%';$('bestbar').style.width=Math.min(100,Math.max(3,best.change*5))+'%';$('worstbar').style.width=Math.min(100,Math.max(3,Math.abs(worst.change)*5))+'%'}
+$('fresh').textContent=lastMessage?Math.max(0,((Date.now()-lastMessage)/1000)).toFixed(1)+' sec':'—';$('freshbar').style.width=lastMessage?Math.max(4,100-(Date.now()-lastMessage)/100):'4%';$('readout').textContent=`${list.length} / ${symbols.length} markets reporting · BTC ${btc?'$'+fmt(btc.price):'loading'} · public ticker stream`; $('lastupdate').textContent='Last update: '+new Date().toLocaleTimeString();
+$('bars').innerHTML=symbols.slice(0,30).map(s=>{let x=data[s],h=x?Math.max(7,Math.min(90,Math.abs(x.change)*7+10)):8;return `<div class="bar" title="${labels(s)} ${x?x.change.toFixed(2)+'%':'loading'}" style="height:${h}px;opacity:${x?'.9':'.25'};background:${x&&x.change<0?'linear-gradient(0deg,#6c2844,#ff7794)':'linear-gradient(0deg,#284c72,#75d6f1)'}"></div>`}).join('');
+drawChart();drawNetwork(list);
+}
+function drawChart(){const svg=$('pricechart');if(history.length<2)return;const min=Math.min(...history),max=Math.max(...history),span=max-min||1;const pts=history.map((v,i)=>`${i/(history.length-1)*390+5},${82-(v-min)/span*70}`).join(' ');svg.innerHTML=`<polyline points="${pts}" fill="none" stroke="#67e8f9" stroke-width="2"/><line x1="5" y1="85" x2="395" y2="85" stroke="#1a2634"/>`}
+let nodes=[];function drawNetwork(list){const c=$('network'),r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;c.width=r.width*dpr;c.height=r.height*dpr;const ctx=c.getContext('2d');ctx.scale(dpr,dpr);const w=r.width,h=r.height,cx=w*.5,cy=h*.48,R=Math.min(w*.36,h*.43);ctx.clearRect(0,0,w,h);
+for(let k=0;k<7;k++){ctx.beginPath();ctx.ellipse(cx,cy,R*(.25+k*.12),R*(.7+k*.045),k*.31,0,Math.PI*2);ctx.strokeStyle='rgba(103,232,249,'+(0.06+k*.008)+')';ctx.stroke()}
+const n=100;nodes=[];for(let i=0;i<n;i++){let a=i*2.39996,rr=R*Math.sqrt((i+.5)/n),x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.9;nodes.push({x,y})}
+for(let i=0;i<n;i++){for(let j=i+1;j<n;j++){let dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,dist=Math.hypot(dx,dy);if(dist<R*.24&&((i*j)%7===0)){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle='rgba(122,168,255,'+(0.15*(1-dist/(R*.24)))+')';ctx.stroke()}}}
+nodes.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,(i%9===0)?2:1,0,Math.PI*2);ctx.fillStyle=i%8===0?'#f8c45c':i%3===0?'#67e8f9':'#a4c6ff';ctx.globalAlpha=.4+(i%5)*.12;ctx.fill();ctx.globalAlpha=1});
+for(let i=0;i<8;i++){let a=(Date.now()/8000+i*Math.PI/4),x=cx+Math.cos(a)*R*(.5+(i%3)*.12),y=cy+Math.sin(a*1.2)*R*.6;ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fillStyle=i%2?'#ff6f91':'#f8c45c';ctx.fill()}
+}
+$('reconnect').onclick=connect;$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'Resume visual updates':'Pause visual updates';if(paused){$('conn').textContent='PAUSED'}else{$('conn').textContent=socket&&socket.readyState===1?'LIVE · BINANCE STREAM':'RECONNECTING';render()}};
+$('reset').onclick=()=>{history=[];$('pricechart').innerHTML='<text x="10" y="42" fill="#718198" font-size="11">Price trace reset; waiting for ticks…</text>'};
+window.addEventListener('resize',()=>drawNetwork(Object.values(data)));setInterval(()=>{if(!paused&&lastMessage)render()},1500);connect();drawNetwork([]);
+</script>
+</body></html>
